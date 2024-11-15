@@ -18,7 +18,8 @@ public class CarManagementApp {
 			} else if (c == 2) {
 				editCar(carList);
 			} else if (c == 6) {
-        expensiveFixes(carList);
+				expensiveFixes(carList);
+			}
 		}
 		
 		if (c == 9) {
@@ -98,6 +99,36 @@ public class CarManagementApp {
 	public static void editCar(Car[] carList) {
 		
 		Scanner sc = new Scanner(System.in);
+		
+		Car editcar;
+		int editcarid = 0, sel = 0;
+		boolean found = false;
+		
+		while (!found) {
+			System.out.println("Enter car ID: ");
+			editcarid = sc.nextInt();
+			
+			for (int i = 0; i < carList.length; i++) {
+				if (editcarid == carList[i].getId()) {
+					editcar = carList[i];
+					found = true;
+				}
+			}
+			
+			if (!found) {
+				System.out.println("Not found, enter again");
+			}
+		}
+		
+		if (found) {
+			System.out.println("Select parameter to edit: ");
+			System.out.println("1. Car name");
+			System.out.println("2. Car ID");
+			System.out.println("3. Car status");
+			System.out.println("4. Car service fee");
+			System.out.println("Enter selection: ");
+			sel = sc.nextInt();
+		}
 		
 	}
 
