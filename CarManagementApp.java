@@ -177,4 +177,14 @@ public class CarManagementApp {
     }
     
   }
+
+	public static void displayProfit(Car[] inventory) {
+		DecimalFormat f = new DecimalFormat("0.00");
+		double total = 0;
+		for (int i = 0; i < inventory.length; i ++) {
+			if (inventory[i]!= null) total += inventory[i].getFee();
+		}
+		System.out.println("Your expected profit from fixing all the cars is $" + f.format(total));
+	}
+
 }
