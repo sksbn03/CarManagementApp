@@ -49,6 +49,7 @@ public class CarManagementApp {
 		
 		System.out.println("Select an option: ");
 		int choice = sc.nextInt();
+		sc.nextLine();
 		return choice;	
 	}
 	
@@ -56,7 +57,7 @@ public class CarManagementApp {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		boolean full = true;
+		boolean full = true, validid = false, repeat = false;
 		String newname = "";
 		int newid = 0;
 		double newfee = 0;
@@ -70,18 +71,27 @@ public class CarManagementApp {
 		if (!full) {
 			System.out.println("Enter new car name: ");
 			newname = sc.nextLine();
-			System.out.println("Enter new car ID: ");
-			newid = sc.nextInt();
 			
-			while (newid == 0) {
-				System.out.println("Invalid ID, enter another: ");
+			do {
+				
+				System.out.println("Enter new car ID: ");
 				newid = sc.nextInt();
-			}
-			
-			sc.nextLine();
+				sc.nextLine();
+				
+				repeat = false;
+				
+				for (int k = 0; k < carList.length; k++) {
+					if (carList[k] != null && newid == carList[k].getId()) {
+						repeat = true;
+						System.out.println("This ID already exists");
+						break;
+					}
+				}
+			} while(repeat);
 			
 			System.out.println("Enter new car service fee: ");
 			newfee = sc.nextDouble();
+			sc.nextLine();
 			
 			for (int j = 0; j < carList.length; j++) {
 				if (carList[j] == null) {
@@ -100,8 +110,10 @@ public class CarManagementApp {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Car editcar;
-		int editcarid = 0, sel = 0;
+		Car editcar = null;
+		String editname = "";
+		int editcarid = 0, editparam = 0, editid;
+		double editfee = 0;
 		boolean found = false;
 		
 		while (!found) {
@@ -109,7 +121,7 @@ public class CarManagementApp {
 			editcarid = sc.nextInt();
 			
 			for (int i = 0; i < carList.length; i++) {
-				if (editcarid == carList[i].getId()) {
+				if (carList[i] != null && editcarid == carList[i].getId()) {
 					editcar = carList[i];
 					found = true;
 				}
@@ -121,15 +133,34 @@ public class CarManagementApp {
 		}
 		
 		if (found) {
+			System.out.println("The selected car:");
+			editcar.printme();
 			System.out.println("Select parameter to edit: ");
 			System.out.println("1. Car name");
 			System.out.println("2. Car ID");
-			System.out.println("3. Car status");
-			System.out.println("4. Car service fee");
+			System.out.println("3. Car service fee");
 			System.out.println("Enter selection: ");
-			sel = sc.nextInt();
+			editparam = sc.nextInt();
+			sc.nextLine();
 		}
 		
+		if (editparam == 1) {
+			System.out.println("Enter the new car name: ");
+			editname = sc.nextLine();
+			editcar.setName(editname);
+		} else if (editparam == 2) {
+			System.out.println("Enter the new car ID: ");
+			editid = sc.nextInt();
+			sc.nextLine();
+			editcar.setId(editid);
+		} else if (editparam == 3) {
+			editfee = sc.nextDouble();
+			sc.nextLine();
+			editcar.setFee(editfee);
+		}
+		
+		System.out.println("Updated car details:");
+		editcar.printme();
 	}
 
   public static void expensiveFixes(Car[] carList) {
@@ -138,6 +169,12 @@ public class CarManagementApp {
     
     System.out.println("Enter specified price: ");
     double price = sc.nextDouble();
+    
+    for (int i = 0; i < carList.length; i++) {
+    	if (carList[i] != null && carList[i].getFee() > price) {
+    		carList[i].printme();
+    	}
+    }
     
   }
 }
