@@ -173,6 +173,45 @@ public class CarManagementApp {
 		editcar.printme();
 	}
 
+    	public static void setStatus(Car[] carList) {
+	  Scanner input = new Scanner(System.in);
+	  boolean found = false; 
+	  int index = -1; 
+	  while (index == -1){
+		  System.out.print("Enter car ID: ");
+		  int id = input.nextInt();
+		  for (int i = 0; i < carList.length; i++) {
+			  if (carList[i] != null && carList[i].getId() == id) {
+				  found = true; 
+				  index = i; 
+			  }
+		  }
+		  if (index == -1) {
+			  System.out.print("Car not found, try again");
+		  } 
+		  
+	  }
+	  if (found) {
+		  Car setCar = carList[index];
+		  System.out.print("Enter 1 to set to fixed, enter 0 to set to not fixed: ");
+		  int choice = input.nextInt();
+		  boolean currStatus = setCar.isStatus();
+		  if (currStatus == false && choice == 1) {
+			  System.out.println("Car status has been set to fixed.");
+			  setCar.setStatus(true);
+		  } else if (currStatus == true && choice == 0){
+			  System.out.println("Car status has been set to not fixed.");
+			  setCar.setStatus(false);
+		  } else if (currStatus == false && choice == 0) {
+			  System.out.println("Car status was already not fixed, no changes made.");
+		  } else if (currStatus == true && choice == 1) {
+			  System.out.println("Car status was already fixed, no changes made.");
+		  }
+		  
+	  }
+	  input.close();
+  	}
+
   public static void expensiveFixes(Car[] carList) {
 
     Scanner sc = new Scanner(System.in);
