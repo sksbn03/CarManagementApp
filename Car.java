@@ -55,7 +55,11 @@ public class Car {
 		System.out.println("----------------------------------------");
 		System.out.println("Car name: " + name);
 		System.out.println("Car ID: " + id);
-		System.out.println("Car status: " + status);
+		if (status) {
+			System.out.println("Car status: fixed");
+		} else {
+			System.out.println("Car status: not fixed");
+		}
 		System.out.println("Car service fee: " + fee);
 		System.out.println("----------------------------------------");
 	}
