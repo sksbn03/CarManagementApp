@@ -18,6 +18,8 @@ public class CarManagementApp {
 				addCar(carList);
 			} else if (c == 2) {
 				editCar(carList);
+			} else if (c == 3 || c == 7) {
+				setStatus(carList);
 			} else if (c == 6) {
 				expensiveFixes(carList);
 			} else if (c == 8) {
