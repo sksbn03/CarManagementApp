@@ -20,6 +20,10 @@ public class CarManagementApp {
 				editCar(carList);
 			} else if (c == 3 || c == 7) {
 				setStatus(carList);
+			} else if (c == 4) {
+				displayCars(carList);
+			} else if (c == 5) {
+				deleteCar(carList);
 			} else if (c == 6) {
 				expensiveFixes(carList);
 			} else if (c == 8) {
@@ -175,67 +179,106 @@ public class CarManagementApp {
 		editcar.printme();
 	}
 
-    	public static void setStatus(Car[] carList) {
-	  Scanner input = new Scanner(System.in);
-	  boolean found = false; 
-	  int index = -1; 
-	  while (index == -1){
-		  System.out.print("Enter car ID: ");
-		  int id = input.nextInt();
-		  for (int i = 0; i < carList.length; i++) {
-			  if (carList[i] != null && carList[i].getId() == id) {
-				  found = true; 
-				  index = i; 
+	public static void setStatus(Car[] carList) {
+		
+		  Scanner sc = new Scanner(System.in);
+		  boolean found = false; 
+		  int index = -1; 
+		  
+		  while (index == -1){
+			  System.out.print("Enter car ID: ");
+			  int id = sc.nextInt();
+			  sc.nextLine();
+			  
+			  for (int i = 0; i < carList.length; i++) {
+				  if (carList[i] != null && carList[i].getId() == id) {
+					  found = true; 
+					  index = i; 
+				  }
+			  }
+			  if (index == -1) {
+				  System.out.print("Car not found, try again");
+			  } 		  
+		  }
+		  
+		  if (found) {
+			  Car setCar = carList[index];
+			  System.out.print("Enter 1 to set to fixed, enter 0 to set to not fixed: ");
+			  int choice = sc.nextInt();
+			  sc.nextLine();
+			  
+			  boolean currStatus = setCar.isStatus();
+			  if (currStatus == false && choice == 1) {
+				  System.out.println("Car status has been set to fixed.");
+				  setCar.setStatus(true);
+			  } else if (currStatus == true && choice == 0){
+				  System.out.println("Car status has been set to not fixed.");
+				  setCar.setStatus(false);
+			  } else if (currStatus == false && choice == 0) {
+				  System.out.println("Car status was already not fixed, no changes made.");
+			  } else if (currStatus == true && choice == 1) {
+				  System.out.println("Car status was already fixed, no changes made.");
 			  }
 		  }
-		  if (index == -1) {
-			  System.out.print("Car not found, try again");
-		  } 
-		  
-	  }
-	  if (found) {
-		  Car setCar = carList[index];
-		  System.out.print("Enter 1 to set to fixed, enter 0 to set to not fixed: ");
-		  int choice = input.nextInt();
-		  boolean currStatus = setCar.isStatus();
-		  if (currStatus == false && choice == 1) {
-			  System.out.println("Car status has been set to fixed.");
-			  setCar.setStatus(true);
-		  } else if (currStatus == true && choice == 0){
-			  System.out.println("Car status has been set to not fixed.");
-			  setCar.setStatus(false);
-		  } else if (currStatus == false && choice == 0) {
-			  System.out.println("Car status was already not fixed, no changes made.");
-		  } else if (currStatus == true && choice == 1) {
-			  System.out.println("Car status was already fixed, no changes made.");
-		  }
-		  
-	  }
-	  input.close();
-  	}
-
-  public static void expensiveFixes(Car[] carList) {
-
-    Scanner sc = new Scanner(System.in);
-    
-    System.out.println("Enter specified price: ");
-    double price = sc.nextDouble();
-    
-    for (int i = 0; i < carList.length; i++) {
-    	if (carList[i] != null && carList[i].getFee() > price) {
-    		carList[i].printme();
-    	}
-    }
-    
-  }
-  
-  public static void displayProfit(Car[] carList) {
-	DecimalFormat twodp = new DecimalFormat("#.##");
-	double total = 0;
-	for (int i = 0; i < carList.length; i ++) {
-		if (carList[i]!= null) total += carList[i].getFee();
-	}
-	System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
 	}
 
+	public static void displayCars (Car [] myInventory) {
+	    for (int i = 0; i < myInventory.length; i++) {
+	        Car currentCar = myInventory[i];
+	        if (currentCar != null) {
+	            currentCar.printme();
+	        }
+	    }
+	}
+	
+	public static void deleteCar (Car [] carList) {
+	    int input;
+	    boolean deleteStatus = false;
+	    Scanner sc = new Scanner (System.in);
+	    
+	    System.out.println("Enter the ID of the car you wish to delete: ");
+	    input = sc.nextInt();
+	    
+	    for (int i = 0; i < carList.length; i++) {
+	        Car currentCar = carList[i];
+	        if (currentCar != null && currentCar.getId() == input) {
+	            carList[i] = null;
+	            System.out.println("Car deleted.");
+	            deleteStatus = true;
+	            break;
+	        }
+	    }
+	    if (deleteStatus == false) {
+	        System.out.println("A car with the entered ID does not exist in the system.");
+	    }
+	}
+	
+	public static void expensiveFixes(Car[] carList) {
+
+	    Scanner sc = new Scanner(System.in);
+	    
+	    System.out.println("Enter specified price: ");
+	    double price = sc.nextDouble();
+	    
+	    for (int i = 0; i < carList.length; i++) {
+	    	if (carList[i] != null && carList[i].getFee() > price) {
+	    		carList[i].printme();
+	    	}
+	    }
+	}
+ 
+	public static void displayProfit(Car[] carList) {
+	  
+		DecimalFormat twodp = new DecimalFormat("#.##");
+		
+		double total = 0;
+		
+		for (int i = 0; i < carList.length; i ++) {
+			if (carList[i]!= null && !carList[i].isStatus()) {
+				total += carList[i].getFee();
+			}
+		}
+				
+		System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
+	}
 }
