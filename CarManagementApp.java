@@ -189,12 +189,12 @@ public class CarManagementApp {
   }
   
   public static void displayProfit(Car[] carList) {
-		DecimalFormat twodp = new DecimalFormat("#.##");
-		double total = 0;
-		for (int i = 0; i < carList.length; i ++) {
-			if (carList[i]!= null) total += carList[i].getFee();
-		}
-		System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
+	DecimalFormat twodp = new DecimalFormat("#.##");
+	double total = 0;
+	for (int i = 0; i < carList.length; i ++) {
+		if (carList[i]!= null) total += carList[i].getFee();
+	}
+	System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
 	}
 
 }
