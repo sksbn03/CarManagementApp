@@ -1,4 +1,5 @@
 import java.util.*;
+import java.text.DecimalFormat;
 
 public class CarManagementApp {
 
@@ -19,6 +20,8 @@ public class CarManagementApp {
 				editCar(carList);
 			} else if (c == 6) {
 				expensiveFixes(carList);
+			} else if (c == 8) {
+				displayProfit(carList);
 			}
 		}
 		
@@ -57,7 +60,7 @@ public class CarManagementApp {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		boolean full = true, validid = false, repeat = false;
+		boolean full = true, validid = false, repeat = false, newstatus = false;
 		String newname = "";
 		int newid = 0;
 		double newfee = 0;
@@ -89,17 +92,24 @@ public class CarManagementApp {
 				}
 			} while(repeat);
 			
+			System.out.println("Enter 1 if car is fixed, 0 if not fixed");
+			if (sc.nextInt() == 1) {
+				newstatus = true;
+				sc.nextLine();
+			}
+			
 			System.out.println("Enter new car service fee: ");
 			newfee = sc.nextDouble();
 			sc.nextLine();
 			
 			for (int j = 0; j < carList.length; j++) {
 				if (carList[j] == null) {
-					carList[j] = new Car(newname, newid, false, newfee);
+					carList[j] = new Car(newname, newid, newstatus, newfee);
+					System.out.println("Car added:");
+					carList[j].printme();
 					break;
 				}
 			}
-			System.out.println("Car added");
 	
 		} else {
 			System.out.println("System is full, delete a car first");
@@ -177,14 +187,14 @@ public class CarManagementApp {
     }
     
   }
-
-	public static void displayProfit(Car[] inventory) {
-		DecimalFormat f = new DecimalFormat("0.00");
+  
+  public static void displayProfit(Car[] carList) {
+		DecimalFormat twodp = new DecimalFormat("#.##");
 		double total = 0;
-		for (int i = 0; i < inventory.length; i ++) {
-			if (inventory[i]!= null) total += inventory[i].getFee();
+		for (int i = 0; i < carList.length; i ++) {
+			if (carList[i]!= null) total += carList[i].getFee();
 		}
-		System.out.println("Your expected profit from fixing all the cars is $" + f.format(total));
+		System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
 	}
 
 }
