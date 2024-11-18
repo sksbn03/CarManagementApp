@@ -18,14 +18,16 @@ public class CarManagementApp {
 				addCar(carList);
 			} else if (c == 2) {
 				editCar(carList);
-			} else if (c == 3 || c == 7) {
-				setStatus(carList);
+			} else if (c == 3) {
+				setFixed(carList);
 			} else if (c == 4) {
 				displayCars(carList);
 			} else if (c == 5) {
 				deleteCar(carList);
 			} else if (c == 6) {
 				expensiveFixes(carList);
+			} else if (c == 7){
+				setNotFixed(carList);
 			} else if (c == 8) {
 				displayProfit(carList);
 			}
@@ -179,14 +181,58 @@ public class CarManagementApp {
 		editcar.printme();
 	}
 
-	public static void setStatus(Car[] carList) {
-		
+	public static void setFixed(Car[] carList) {
+		  // initiliaze scanner
+		  Scanner sc = new Scanner(System.in);
+		  // initialize found and index variable
+		  boolean found = false; 
+		  int index = -1; 
+
+		  // run loop while index has not been updated
+		  while (index == -1){
+			  // have user input and store car ID to search for car
+			  System.out.println("Enter car ID: ");
+			  int id = sc.nextInt();
+			  sc.nextLine();
+
+			  // run through carlist and search for id 
+			  for (int i = 0; i < carList.length; i++) {
+				  if (carList[i] != null && carList[i].getId() == id) {
+					  // when id is found, update found and save index
+					  found = true; 
+					  index = i; 
+				  }
+			  }
+			  // if index does not change, have user input another id 
+			  if (index == -1) {
+				  System.out.print("Car not found, try again");
+			  } 		  
+		  }
+		  // if id was found 
+		  if (found) {
+			  // call car object
+			  Car setCar = carList[index];
+			  // find current status 
+			  boolean currStatus = setCar.isStatus();
+			  // if not fixed (false), set status to true (fixed)
+			  if (currStatus == false) {
+				  System.out.println("Car status has been set to fixed.");
+				  setCar.setStatus(true);
+			  // if status was already fixed 
+			  } else {
+				  System.out.println("Car status was already fixed, no changes made.");
+			  }
+		  }
+	}
+
+	public static void setNotFixed(Car[] carList) {
+		  // same logic as setFixed method
 		  Scanner sc = new Scanner(System.in);
 		  boolean found = false; 
 		  int index = -1; 
 		  
 		  while (index == -1){
-			  System.out.print("Enter car ID: ");
+			  System.out.println("Enter car ID: ");
 			  int id = sc.nextInt();
 			  sc.nextLine();
 			  
@@ -203,21 +249,14 @@ public class CarManagementApp {
 		  
 		  if (found) {
 			  Car setCar = carList[index];
-			  System.out.print("Enter 1 to set to fixed, enter 0 to set to not fixed: ");
-			  int choice = sc.nextInt();
-			  sc.nextLine();
-			  
 			  boolean currStatus = setCar.isStatus();
-			  if (currStatus == false && choice == 1) {
-				  System.out.println("Car status has been set to fixed.");
-				  setCar.setStatus(true);
-			  } else if (currStatus == true && choice == 0){
+			  // if status was fixed, change to not fix
+			  if (currStatus == true) {
 				  System.out.println("Car status has been set to not fixed.");
 				  setCar.setStatus(false);
-			  } else if (currStatus == false && choice == 0) {
+			  // if already not fixed, make no changes and exit 
+			  } else {
 				  System.out.println("Car status was already not fixed, no changes made.");
-			  } else if (currStatus == true && choice == 1) {
-				  System.out.println("Car status was already fixed, no changes made.");
 			  }
 		  }
 	}
