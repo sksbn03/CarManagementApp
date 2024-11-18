@@ -307,17 +307,19 @@ public class CarManagementApp {
 	}
  
 	public static void displayProfit(Car[] carList) {
-	  
+	
 		DecimalFormat twodp = new DecimalFormat("#.##");
 		
 		double total = 0;
-		
+
+		// if status of car is not fixed, add the service fee to totoal
 		for (int i = 0; i < carList.length; i ++) {
 			if (carList[i]!= null && !carList[i].isStatus()) {
 				total += carList[i].getFee();
 			}
 		}
-				
+
+		// print total profit that would be gained after fixing all cars that have not been fixed yet 
 		System.out.println("Your expected profit from fixing all the cars is $" + twodp.format(total));
 	}
 }
